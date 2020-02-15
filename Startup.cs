@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Knock.API.DbContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Knock.API
 {
@@ -26,6 +21,10 @@ namespace Knock.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<KnockContext>(options => {
+                options.UseSqlite(Configuration.GetConnectionString("KnockContext"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
