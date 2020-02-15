@@ -20,5 +20,15 @@ namespace Knock.API.Services
     {
       return await _context.Restaurants.ToListAsync();
     }
+
+    public async Task<Restaurant> GetRestaurantAsync(Guid restaurantId)
+    {
+      if(restaurantId == Guid.Empty)
+      {
+        throw new ArgumentNullException(nameof(restaurantId));
+      }
+
+      return await _context.Restaurants.FirstOrDefaultAsync(a => a.Id == restaurantId);
+    }
   }
 }

@@ -26,5 +26,18 @@ namespace Knock.API.Controllers
 
       return Ok(restaurants);
     }
+
+    [HttpGet("{restaurantId}")]
+    public async Task<ActionResult> GetRestaurant(Guid restaurantId)
+    {
+      var restaurant = await _knockRepository.GetRestaurantAsync(restaurantId);
+
+      if(restaurant == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(restaurant);
+    }
   }
 }
