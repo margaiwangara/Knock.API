@@ -274,4 +274,7 @@ __pycache__/
 
 # Sqlite DB Ignore
 *.db
+
+# Controller
+Controllers/Controller.cs
 # End of https://www.gitignore.io/api/aspnetcore
