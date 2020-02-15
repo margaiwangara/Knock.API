@@ -9,11 +9,11 @@ namespace Knock.API.Services
   {
     Task<IEnumerable<Restaurant>> GetRestaurantsAsync();
     Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
-    // Task<Restaurant> AddRestaurantAsync(Restaurant restaurant);
+    void AddRestaurant(Restaurant restaurant);
     // Task<Restaurant> UpdateRestaurantAsync(Restaurant restaurant);
     // Task<Restaurant> DeleteRestaurantAsync(Restaurant restaurant);
     // Task<bool> RestaurantExists(Guid restaurantId);
-    // Task<bool> SaveChangesAsync();
+    Task<bool> SaveChangesAsync();
 
 
   }

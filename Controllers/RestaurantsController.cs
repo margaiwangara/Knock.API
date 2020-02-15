@@ -39,5 +39,16 @@ namespace Knock.API.Controllers
 
       return Ok(restaurant);
     }
+
+    public async Task<ActionResult> CreateRestaurant(Restaurant restaurant)
+    {
+      _knockRepository.AddRestaurant(restaurant);
+      await _knockRepository.SaveChangesAsync();
+
+      return CreatedAtAction(nameof(GetRestaurant), 
+                  new { restaurantId = restaurant.Id }, restaurant);
+    }
+
+
   }
 }

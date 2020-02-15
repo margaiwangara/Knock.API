@@ -30,5 +30,20 @@ namespace Knock.API.Services
 
       return await _context.Restaurants.FirstOrDefaultAsync(a => a.Id == restaurantId);
     }
+
+    public void AddRestaurant(Restaurant restaurant)
+    {
+      if(restaurant == null)
+      {
+        throw new ArgumentNullException(nameof(restaurant));
+      }
+
+      _context.Restaurants.Add(restaurant);
+    }
+
+    public async Task<bool> SaveChangesAsync()
+    {
+      return (await _context.SaveChangesAsync() >= 0);
+    }
   }
 }
