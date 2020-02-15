@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Knock.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using Knock.API.Services;
 
 namespace Knock.API
 {
@@ -21,7 +22,9 @@ namespace Knock.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            
+            services.AddScoped<IKnockRepository, KnockRepository>();
+            
             services.AddDbContext<KnockContext>(options => {
                 options.UseSqlite(Configuration.GetConnectionString("KnockContext"));
             });
