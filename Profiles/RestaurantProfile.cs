@@ -9,6 +9,7 @@ namespace Knock.API.Profiles
     public RestaurantProfile()
     {
       CreateMap<Restaurant, RestaurantDto>();
+      CreateMap<RestaurantForCreationDto, Restaurant>();
     }
   }
 }

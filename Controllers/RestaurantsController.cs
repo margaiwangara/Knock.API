@@ -41,17 +41,25 @@ namespace Knock.API.Controllers
         return NotFound();
       }
 
-      return Ok(restaurant);
+      return Ok(_mapper.Map<RestaurantDto>(restaurant));
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateRestaurant(Restaurant restaurant)
+    public async Task<ActionResult> CreateRestaurant(RestaurantForCreationDto restaurant)
     {
-      _knockRepository.AddRestaurant(restaurant);
+      if(restaurant == null)
+      {
+        return BadRequest();
+      }
+      
+      var restaurantEntity = _mapper.Map<Restaurant>(restaurant);
+      _knockRepository.AddRestaurant(restaurantEntity);
       await _knockRepository.SaveChangesAsync();
 
+      var mappedRestaurant = _mapper.Map<RestaurantDto>(restaurantEntity);
+
       return CreatedAtAction(nameof(GetRestaurant), 
-                  new { restaurantId = restaurant.Id }, restaurant);
+                  new { restaurantId = mappedRestaurant.Id }, restaurant);
     }
 
     [HttpPut("{restaurantId}")]
