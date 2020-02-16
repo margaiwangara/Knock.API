@@ -41,6 +41,11 @@ namespace Knock.API.Services
       _context.Restaurants.Add(restaurant);
     }
 
+    public void UpdateRestaurant(Restaurant restaurant)
+    {
+      _context.Restaurants.Update(restaurant);
+    }
+
     public async Task<bool> SaveChangesAsync()
     {
       return (await _context.SaveChangesAsync() >= 0);

@@ -40,6 +40,7 @@ namespace Knock.API.Controllers
       return Ok(restaurant);
     }
 
+    [HttpPost]
     public async Task<ActionResult> CreateRestaurant(Restaurant restaurant)
     {
       _knockRepository.AddRestaurant(restaurant);
@@ -49,6 +50,20 @@ namespace Knock.API.Controllers
                   new { restaurantId = restaurant.Id }, restaurant);
     }
 
+    [HttpPut("{restaurantId}")]
+    public async Task<ActionResult> UpdateRestaurant(Guid restaurantId, Restaurant restaurant)
+    {
+      if(restaurant.Id != restaurantId)
+      {
+        return BadRequest();
+      }
+
+      await _knockRepository.SaveChangesAsync();
+
+      return NoContent();
+    }
+
+    
 
   }
 }
