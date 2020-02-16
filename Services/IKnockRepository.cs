@@ -11,8 +11,8 @@ namespace Knock.API.Services
     Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
     void AddRestaurant(Restaurant restaurant);
     void UpdateRestaurant(Restaurant restaurant);
-    // Task<Restaurant> DeleteRestaurantAsync(Restaurant restaurant);
-    // Task<bool> RestaurantExists(Guid restaurantId);
+    void DeleteRestaurant(Restaurant restaurant);
+    Task<bool> RestaurantExists(Guid restaurantId);
     Task<bool> SaveChangesAsync();
 
 

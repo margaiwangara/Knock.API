@@ -46,6 +46,22 @@ namespace Knock.API.Services
       _context.Restaurants.Update(restaurant);
     }
 
+    public void DeleteRestaurant(Restaurant restaurant)
+    {
+      if(restaurant == null)
+      {
+        throw new ArgumentNullException(nameof(restaurant));
+      }
+
+      _context.Restaurants.Remove(restaurant);
+
+    }
+
+    public async Task<bool> RestaurantExists(Guid restaurantId)
+    {
+      return await _context.Restaurants.AnyAsync(r => r.Id == restaurantId);
+    }
+
     public async Task<bool> SaveChangesAsync()
     {
       return (await _context.SaveChangesAsync() >= 0);

@@ -74,7 +74,23 @@ namespace Knock.API.Controllers
       }
 
       var mappedRestaurant = _mapper.Map<RestaurantDto>(restaurantEntity);
-      
+
+      await _knockRepository.SaveChangesAsync();
+
+      return NoContent();
+    }
+
+    [HttpDelete("{restaurantId}")]
+    public async Task<ActionResult> DeleteRestaurant(Guid restaurantId)
+    {
+      var restaurant = await _knockRepository.GetRestaurantAsync(restaurantId);
+
+      if(restaurant == null)
+      {
+        return NotFound();
+      }
+
+      _knockRepository.DeleteRestaurant(restaurant);
       await _knockRepository.SaveChangesAsync();
 
       return NoContent();
