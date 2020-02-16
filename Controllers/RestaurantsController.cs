@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Knock.API.Entities;
+using Knock.API.Models;
 using Knock.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +14,13 @@ namespace Knock.API.Controllers
   public class RestaurantsController : ControllerBase
   {
     IKnockRepository _knockRepository;
-
-    public RestaurantsController(IKnockRepository knockRepository)
+    IMapper _mapper;
+    public RestaurantsController(IKnockRepository knockRepository, IMapper mapper)
     {
       _knockRepository = knockRepository ??
             throw new ArgumentNullException(nameof(knockRepository));
+      _mapper = mapper ??
+            throw new ArgumentNullException(nameof(mapper));
     }
 
     [HttpGet()]
@@ -24,7 +28,7 @@ namespace Knock.API.Controllers
     {
       var restaurants = await _knockRepository.GetRestaurantsAsync();
 
-      return Ok(restaurants);
+      return Ok(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants));
     }
 
     [HttpGet("{restaurantId}")]
