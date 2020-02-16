@@ -51,7 +51,7 @@ namespace Knock.API.Controllers
       {
         return BadRequest();
       }
-      
+
       var restaurantEntity = _mapper.Map<Restaurant>(restaurant);
       _knockRepository.AddRestaurant(restaurantEntity);
       await _knockRepository.SaveChangesAsync();
@@ -63,13 +63,18 @@ namespace Knock.API.Controllers
     }
 
     [HttpPut("{restaurantId}")]
-    public async Task<ActionResult> UpdateRestaurant(Guid restaurantId, Restaurant restaurant)
+    public async Task<ActionResult> UpdateRestaurant(Guid restaurantId, 
+                RestaurantForUpdateDto restaurant)
     {
-      if(restaurant.Id != restaurantId)
+      var restaurantEntity = _mapper.Map<Restaurant>(restaurant);
+
+      if(restaurantEntity.Id != restaurantId)
       {
         return BadRequest();
       }
 
+      var mappedRestaurant = _mapper.Map<RestaurantDto>(restaurantEntity);
+      
       await _knockRepository.SaveChangesAsync();
 
       return NoContent();
