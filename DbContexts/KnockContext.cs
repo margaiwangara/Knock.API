@@ -8,5 +8,6 @@ namespace Knock.API.DbContexts
     public KnockContext(DbContextOptions<KnockContext> options) : base(options){}
 
     public DbSet<Restaurant> Restaurants { get; set; }
+    public DbSet<Review> Reviews { get; set; }
   }
 }
