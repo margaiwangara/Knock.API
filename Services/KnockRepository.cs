@@ -79,5 +79,40 @@ namespace Knock.API.Services
     {
       return (await _context.SaveChangesAsync() >= 0);
     }
+
+    public async Task<IEnumerable<Review>> GetReviewsAsync()
+    {
+      return await _context.Reviews.ToListAsync<Review>();
+    }
+
+    public async Task<Review> GetReviewAsync(Guid reviewId)
+    {
+      if(reviewId == Guid.Empty)
+      {
+        throw new ArgumentNullException(nameof(reviewId));
+      }
+
+      return await _context.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
+    }
+
+    public void AddReview(Review review)
+    {
+      if(review == null)
+      {
+        throw new ArgumentNullException(nameof(review));
+      }
+
+      _context.Reviews.Add(review);
+    }
+
+    public void UpdateReview(Review review)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void DeleteReview(Review review)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

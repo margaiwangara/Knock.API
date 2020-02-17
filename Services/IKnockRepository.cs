@@ -7,6 +7,7 @@ namespace Knock.API.Services
 {
   public interface IKnockRepository
   {
+    // Restaurants
     Task<IEnumerable<Restaurant>> GetRestaurantsAsync();
     Task<IEnumerable<Restaurant>> GetRestaurantsAsync(IEnumerable<Guid> restaurantIds);
     Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
@@ -15,6 +16,13 @@ namespace Knock.API.Services
     void DeleteRestaurant(Restaurant restaurant);
     Task<bool> RestaurantExists(Guid restaurantId);
     Task<bool> SaveChangesAsync();
+
+    // Reviews
+    Task<IEnumerable<Review>> GetReviewsAsync();
+    Task<Review> GetReviewAsync(Guid reviewId);
+    void AddReview(Review review);
+    void UpdateReview(Review review);
+    void DeleteReview(Review review);
 
 
   }
