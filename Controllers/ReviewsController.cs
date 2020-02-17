@@ -24,11 +24,31 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet()]
-    public async Task<ActionResult<IEnumerable<Review>>> GetReviewsForRestaurant()
+    public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviewsForRestaurant()
     {
       var reviews = await _knockRepository.GetReviewsAsync();
 
       return Ok(_mapper.Map<IEnumerable<ReviewDto>>(reviews));
+    }
+
+    [HttpGet("{reviewId}", Name="GetReviewForRestaurant")]
+    public async Task<ActionResult<ReviewDto>> GetReviewForRestaurant(Guid restaurantId, Guid reviewId)
+    {
+      // check if restaurant exists
+      if(!await _knockRepository.RestaurantExists(restaurantId))
+      {
+        return NotFound();
+      }
+
+      var review = await _knockRepository.GetReviewAsync(restaurantId, reviewId);
+
+      if(review == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(_mapper.Map<ReviewDto>(review));
+
     }
 
     [HttpPost]
@@ -41,16 +61,18 @@ namespace Knock.API.Controllers
       }
 
       // map review to review
-      var reviewMap = _mapper.Map<Review>(review);
+      var reviewEntity = _mapper.Map<Review>(review);
 
       // if exists add review
-      _knockRepository.AddReview(restaurantId, reviewMap);
+      _knockRepository.AddReview(restaurantId, reviewEntity);
       await _knockRepository.SaveChangesAsync();
 
       // remap to dto
-      var reviewRemap = _mapper.Map<ReviewDto>(reviewMap);
+      var reviewToReturn = _mapper.Map<ReviewDto>(reviewEntity);
 
-      return Ok();
+      return CreatedAtRoute(nameof(GetReviewForRestaurant),
+                new { restaurantId = restaurantId, reviewId = reviewToReturn.Id }, 
+                reviewToReturn);
     }
   }
 }

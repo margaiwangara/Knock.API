@@ -19,7 +19,7 @@ namespace Knock.API.Services
 
     // Reviews
     Task<IEnumerable<Review>> GetReviewsAsync();
-    Task<Review> GetReviewAsync(Guid reviewId);
+    Task<Review> GetReviewAsync(Guid restaurantId, Guid reviewId);
     void AddReview(Guid restaurantId, Review review);
     void UpdateReview(Review review);
     void DeleteReview(Review review);

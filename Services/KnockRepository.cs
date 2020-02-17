@@ -85,14 +85,21 @@ namespace Knock.API.Services
       return await _context.Reviews.ToListAsync<Review>();
     }
 
-    public async Task<Review> GetReviewAsync(Guid reviewId)
+    public async Task<Review> GetReviewAsync(Guid restaurantId, Guid reviewId)
     {
       if(reviewId == Guid.Empty)
       {
         throw new ArgumentNullException(nameof(reviewId));
       }
 
-      return await _context.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
+      if(restaurantId == Guid.Empty)
+      {
+        throw new ArgumentNullException(nameof(restaurantId));
+      }
+
+      return await _context.Reviews
+                    .Where(r => r.Id == reviewId && r.RestaurantId == restaurantId)
+                    .FirstOrDefaultAsync();
     }
 
     public void AddReview(Guid restaurantId, Review review)
