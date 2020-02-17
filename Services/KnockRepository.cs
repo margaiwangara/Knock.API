@@ -4,6 +4,7 @@ using Knock.API.DbContexts;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Knock.API.Services
 {
@@ -18,7 +19,19 @@ namespace Knock.API.Services
 
     public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync()
     {
-      return await _context.Restaurants.ToListAsync();
+      return await _context.Restaurants.ToListAsync<Restaurant>();
+    }
+
+    public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync(IEnumerable<Guid> restaurantIds)
+    {
+      if(restaurantIds == null)
+      {
+        throw new ArgumentNullException(nameof(restaurantIds));
+      }
+
+      return await _context.Restaurants
+                    .Where(r => restaurantIds.Contains(r.Id))
+                    .ToListAsync();
     }
 
     public async Task<Restaurant> GetRestaurantAsync(Guid restaurantId)

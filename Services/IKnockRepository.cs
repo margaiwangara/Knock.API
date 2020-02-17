@@ -8,6 +8,7 @@ namespace Knock.API.Services
   public interface IKnockRepository
   {
     Task<IEnumerable<Restaurant>> GetRestaurantsAsync();
+    Task<IEnumerable<Restaurant>> GetRestaurantsAsync(IEnumerable<Guid> restaurantIds);
     Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
     void AddRestaurant(Restaurant restaurant);
     void UpdateRestaurant(Restaurant restaurant);
