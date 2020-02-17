@@ -11,6 +11,7 @@ namespace Knock.API.Profiles
     {
       
       CreateMap<Review, ReviewDto>();
+      CreateMap<ReviewForCreationDto, Review>();
         
     }
   }

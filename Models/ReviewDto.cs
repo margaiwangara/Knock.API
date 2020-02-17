@@ -6,7 +6,7 @@ namespace Knock.API.Models
   {
     public Guid Id { get; set; }
     public string Content { get; set; }
-    public byte Rating { get; set; } = 0;
+    public byte Rating { get; set; }
     public DateTimeOffset DateCreated { get; set; }
   }
 }
