@@ -122,12 +122,12 @@ namespace Knock.API.Services
 
     public void UpdateReview(Review review)
     {
-      throw new NotImplementedException();
+      // No implementation
     }
 
     public void DeleteReview(Review review)
     {
-      throw new NotImplementedException();
+      _context.Reviews.Remove(review);
     }
   }
 }
