@@ -8,10 +8,14 @@ namespace Knock.API.Entities
   {
     [Key]
     public Guid Id { get; set; }
+
     [Required]
     [MaxLength(200)]
     public string Content { get; set; }
-    public byte Rating { get; set; }
+
+    [Range(0, 5)]
+    public byte Rating { get; set; } = 0;
+
     [ForeignKey("RestaurantId")]
     public Restaurant Restaurant { get; set; }
     public Guid RestaurantId { get; set; }
