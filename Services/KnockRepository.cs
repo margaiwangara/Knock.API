@@ -56,7 +56,7 @@ namespace Knock.API.Services
 
     public void UpdateRestaurant(Restaurant restaurant)
     {
-      _context.Restaurants.Update(restaurant);
+      // no implementation
     }
 
     public void DeleteRestaurant(Restaurant restaurant)

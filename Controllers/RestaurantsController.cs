@@ -63,31 +63,27 @@ namespace Knock.API.Controllers
                   new { restaurantId = mappedRestaurant.Id }, restaurant);
     }
 
-    [HttpPost("{restaurantId}")]
-    public async Task<IActionResult> BlockRestaurantCreation(Guid restaurantId)
-    { 
-      if(await _knockRepository.RestaurantExists(restaurantId))
-      {
-        return new StatusCodeResult(StatusCodes.Status409Conflict);
-      }
-
-      return NotFound();
-
+    [HttpOptions]
+    public IActionResult GetRestaurantOptions()
+    {
+      Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+      return Ok();
     }
 
     [HttpPut("{restaurantId}")]
     public async Task<IActionResult> UpdateRestaurant(Guid restaurantId, 
                 RestaurantForUpdateDto restaurant)
     {
-      var restaurantEntity = _mapper.Map<Restaurant>(restaurant);
-
-      if(restaurantEntity.Id != restaurantId)
+      var restaurantFromRepo = await _knockRepository.GetRestaurantAsync(restaurantId);
+      
+      if(restaurantFromRepo == null)
       {
-        return BadRequest();
+        return NotFound();
       }
 
-      var mappedRestaurant = _mapper.Map<RestaurantDto>(restaurantEntity);
+      _mapper.Map(restaurant, restaurantFromRepo);
 
+      // save changes
       await _knockRepository.SaveChangesAsync();
 
       return NoContent();
