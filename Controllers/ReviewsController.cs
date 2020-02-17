@@ -75,8 +75,51 @@ namespace Knock.API.Controllers
                 reviewToReturn);
     }
 
+    [HttpPut("{reviewId}")]
+    public async Task<IActionResult> UpdateReviewForRestaurant(Guid restaurantId, Guid reviewId, ReviewForUpdateDto review)
+    {
+      // optimize function
+      await DeletePutOptimize(restaurantId, reviewId);
+
+      // get reviews
+      var reviewFromRepo = await _knockRepository.GetReviewAsync(restaurantId, reviewId);
+
+      if(reviewFromRepo == null)
+      {
+        return NotFound();
+      }
+
+      // map
+      _mapper.Map(review, reviewFromRepo);
+
+      // call update function
+      _knockRepository.UpdateReview(reviewFromRepo);
+      await _knockRepository.SaveChangesAsync();
+
+      return NoContent();
+    }
+
     [HttpDelete("{reviewId}")]
     public async Task<IActionResult> DeleteReviewForRestaurant(Guid restaurantId, Guid reviewId)
+    {
+      // optimize function
+      await DeletePutOptimize(restaurantId, reviewId);
+      // check if review exists
+      var review = await _knockRepository.GetReviewAsync(restaurantId, reviewId);
+
+      if(review == null)
+      {
+        return NotFound();
+      }
+
+      // delete review
+      _knockRepository.DeleteReview(review);
+      await _knockRepository.SaveChangesAsync();
+
+      return NoContent();
+    }
+
+    private async Task<IActionResult> DeletePutOptimize(Guid restaurantId, Guid reviewId)
     {
       // if ids exist
       if(restaurantId == Guid.Empty)
@@ -95,19 +138,7 @@ namespace Knock.API.Controllers
         return NotFound();
       }
 
-      // check if review exists
-      var review = await _knockRepository.GetReviewAsync(restaurantId, reviewId);
-
-      if(review == null)
-      {
-        return NotFound();
-      }
-
-      // delete review
-      _knockRepository.DeleteReview(review);
-      await _knockRepository.SaveChangesAsync();
-
-      return NoContent();
+      return null;
     }
   }
 }
