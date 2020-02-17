@@ -51,6 +51,14 @@ namespace Knock.API.Services
         throw new ArgumentNullException(nameof(restaurant));
       }
 
+      // add restaurant id
+      restaurant.Id = Guid.NewGuid();
+
+      foreach(var review in restaurant.Reviews)
+      {
+        review.Id = Guid.NewGuid();
+      }
+
       _context.Restaurants.Add(restaurant);
     }
 
