@@ -3,14 +3,16 @@ using System;
 using Knock.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Knock.API.Migrations
 {
     [DbContext(typeof(KnockContext))]
-    partial class KnockContextModelSnapshot : ModelSnapshot
+    [Migration("20200217161457_AddRangeToRatingColumnInReviewModel")]
+    partial class AddRangeToRatingColumnInReviewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,7 +79,7 @@ namespace Knock.API.Migrations
             modelBuilder.Entity("Knock.API.Entities.Review", b =>
                 {
                     b.HasOne("Knock.API.Entities.Restaurant", "Restaurant")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

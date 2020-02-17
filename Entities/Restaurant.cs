@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Knock.API.Entities
@@ -22,5 +23,7 @@ namespace Knock.API.Entities
     public bool OffersTakeout { get; set; }
     public DateTimeOffset DateCreated { get; set; }
         = DateTimeOffset.Now;
+    public ICollection<Review> Reviews { get; set; }
+        = new List<Review>();
   }
 }
