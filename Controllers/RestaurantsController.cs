@@ -5,6 +5,7 @@ using AutoMapper;
 using Knock.API.Entities;
 using Knock.API.Models;
 using Knock.API.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
@@ -24,7 +25,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet()]
-    public async Task<ActionResult> GetRestaurants()
+    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants()
     {
       var restaurants = await _knockRepository.GetRestaurantsAsync();
 
@@ -32,7 +33,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet("{restaurantId}")]
-    public async Task<ActionResult> GetRestaurant(Guid restaurantId)
+    public async Task<ActionResult<RestaurantDto>> GetRestaurant(Guid restaurantId)
     {
       var restaurant = await _knockRepository.GetRestaurantAsync(restaurantId);
 
@@ -45,7 +46,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateRestaurant(RestaurantForCreationDto restaurant)
+    public async Task<IActionResult> CreateRestaurant(RestaurantForCreationDto restaurant)
     {
       if(restaurant == null)
       {
@@ -62,8 +63,20 @@ namespace Knock.API.Controllers
                   new { restaurantId = mappedRestaurant.Id }, restaurant);
     }
 
+    [HttpPost("{restaurantId}")]
+    public async Task<IActionResult> BlockRestaurantCreation(Guid restaurantId)
+    { 
+      if(await _knockRepository.RestaurantExists(restaurantId))
+      {
+        return new StatusCodeResult(StatusCodes.Status409Conflict);
+      }
+
+      return NotFound();
+
+    }
+
     [HttpPut("{restaurantId}")]
-    public async Task<ActionResult> UpdateRestaurant(Guid restaurantId, 
+    public async Task<IActionResult> UpdateRestaurant(Guid restaurantId, 
                 RestaurantForUpdateDto restaurant)
     {
       var restaurantEntity = _mapper.Map<Restaurant>(restaurant);
@@ -81,7 +94,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpDelete("{restaurantId}")]
-    public async Task<ActionResult> DeleteRestaurant(Guid restaurantId)
+    public async Task<IActionResult> DeleteRestaurant(Guid restaurantId)
     {
       var restaurant = await _knockRepository.GetRestaurantAsync(restaurantId);
 
