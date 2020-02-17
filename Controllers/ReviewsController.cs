@@ -74,5 +74,40 @@ namespace Knock.API.Controllers
                 new { restaurantId = restaurantId, reviewId = reviewToReturn.Id }, 
                 reviewToReturn);
     }
+
+    [HttpDelete("{reviewId}")]
+    public async Task<IActionResult> DeleteReviewForRestaurant(Guid restaurantId, Guid reviewId)
+    {
+      // if ids exist
+      if(restaurantId == Guid.Empty)
+      {
+        return BadRequest();
+      }
+
+      if(reviewId == Guid.Empty)
+      {
+        return BadRequest();
+      }
+
+      // check if restaurant exists
+      if(!await _knockRepository.RestaurantExists(restaurantId))
+      {
+        return NotFound();
+      }
+
+      // check if review exists
+      var review = await _knockRepository.GetReviewAsync(restaurantId, reviewId);
+
+      if(review == null)
+      {
+        return NotFound();
+      }
+
+      // delete review
+      _knockRepository.DeleteReview(review);
+      await _knockRepository.SaveChangesAsync();
+
+      return NoContent();
+    }
   }
 }
