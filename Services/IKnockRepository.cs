@@ -18,6 +18,7 @@ namespace Knock.API.Services
     Task<bool> SaveChangesAsync();
 
     // Reviews
+    Task<IEnumerable<Review>> GetReviewsAsync(Guid restaurantId, IEnumerable<Guid> reviewIds);
     Task<IEnumerable<Review>> GetReviewsAsync();
     Task<Review> GetReviewAsync(Guid restaurantId, Guid reviewId);
     void AddReview(Guid restaurantId, Review review);

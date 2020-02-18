@@ -93,6 +93,24 @@ namespace Knock.API.Services
       return await _context.Reviews.ToListAsync<Review>();
     }
 
+    public async Task<IEnumerable<Review>> GetReviewsAsync(Guid restaurantId, IEnumerable<Guid> reviewIds)
+    {
+      if(restaurantId == null)
+      {
+        throw new ArgumentNullException(nameof(restaurantId));
+      }
+
+      if(reviewIds == null)
+      {
+        throw new ArgumentNullException(nameof(reviewIds));
+      }
+
+      return await _context.Reviews
+                    .Where(r => r.RestaurantId == restaurantId && reviewIds.Contains(r.Id))
+                    .ToListAsync();
+
+    }
+
     public async Task<Review> GetReviewAsync(Guid restaurantId, Guid reviewId)
     {
       if(reviewId == Guid.Empty)

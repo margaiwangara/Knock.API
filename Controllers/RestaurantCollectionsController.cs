@@ -28,7 +28,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet("({ids})", Name="GetRestaurantCollection")]
-    public async Task<IActionResult> GetRestaurantCollection(
+    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurantCollection(
                   [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
       if(ids == null)
