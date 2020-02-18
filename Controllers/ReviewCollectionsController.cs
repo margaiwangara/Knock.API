@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Knock.API.Entities;
 using Knock.API.Helpers;
 using Knock.API.Models;
 using Knock.API.Services;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Knock.API.Controllers
 {
   [ApiController]
-  [Route("api/{restaurantId}/reviewcollections")]
+  [Route("api/restaurants/{restaurantId}/reviewcollections")]
   public class ReviewCollectionsController : ControllerBase
   {
     private readonly IKnockRepository _knockRepository;
@@ -26,7 +27,7 @@ namespace Knock.API.Controllers
         
     }
 
-    [HttpGet("({reviewIds})")]
+    [HttpGet("({reviewIds})", Name="GetReviewCollectionForRestaurant")]
     public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviewCollectionForRestaurant(Guid restaurantId, 
                       [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> reviewIds)
     {
@@ -49,9 +50,40 @@ namespace Knock.API.Controllers
       }
 
       // map
-      var reviewsToMap = _mapper.Map<ReviewDto>(reviews);
+      var reviewsToMap = _mapper.Map<IEnumerable<ReviewDto>>(reviews);
 
       return Ok(reviewsToMap);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateReviewCollectionForRestaurant(Guid restaurantId,
+        IEnumerable<ReviewForCreationDto> reviewCollection)
+    {
+      if(restaurantId == null)
+      {
+        return BadRequest();
+      }
+
+      if(reviewCollection == null)
+      {
+        return BadRequest();
+      }
+
+      var reviewEntities = _mapper.Map<IEnumerable<Review>>(reviewCollection);
+
+      foreach(var review in reviewEntities)
+      {
+        _knockRepository.AddReview(restaurantId, review);
+      }
+
+      await _knockRepository.SaveChangesAsync();
+
+      var reviewCollectionToReturn = _mapper.Map<IEnumerable<ReviewDto>>(reviewEntities);
+      string idsAsString = string.Join(",", 
+                        reviewCollectionToReturn.Select(r => r.Id));
+
+      return CreatedAtRoute(nameof(GetReviewCollectionForRestaurant),
+          new { restaurantId = restaurantId, reviewIds = idsAsString }, reviewCollectionToReturn);
     }
 
     
