@@ -105,7 +105,6 @@ namespace Knock.API.Controllers
       return NoContent();
     }
 
-    
-
+  
   }
 }
