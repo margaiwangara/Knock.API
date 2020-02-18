@@ -13,8 +13,8 @@ namespace Knock.API.Controllers
   [Route("api/restaurants/{restaurantId}/reviews")]
   public class ReviewsController : ControllerBase
   {
-    IKnockRepository _knockRepository;
-    IMapper _mapper;
+    private readonly IKnockRepository _knockRepository;
+    private readonly IMapper _mapper;
     public ReviewsController(IKnockRepository knockRepository, IMapper mapper)
     {
         _knockRepository = knockRepository ??
