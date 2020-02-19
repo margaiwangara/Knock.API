@@ -4,7 +4,7 @@ using Knock.API.ValidationAttributes;
 
 namespace Knock.API.Models
 {
-  [PasswordMustNotBeEqualToEmail]
+  [PasswordMustNotBeEqualToEmail(ErrorMessage="Password and Email fields must not be equal")]
   public class UserForRegistrationDto
   {
     public Guid Id { get; set; }
