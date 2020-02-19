@@ -1,21 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AutoMapper;
-using Knock.API.Models;
 using Knock.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
 {
   [ApiController]
-  [Route("api/users")]
-  public class UsersController : ControllerBase
+  [Route("api/auth")]
+  public class AuthController : ControllerBase
   {
     private readonly IKnockRepository _knockRepository;
     private readonly IMapper _mapper;
-
-    public UsersController(IKnockRepository knockRepository, IMapper mapper)
+    
+    public AuthController(IKnockRepository knockRepository, IMapper mapper)
     {
       _knockRepository = knockRepository ??
                 throw new ArgumentNullException(nameof(knockRepository));
@@ -23,12 +20,10 @@ namespace Knock.API.Controllers
                 throw new ArgumentNullException(nameof(mapper));
     }
 
-    [HttpGet()]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
-    {
-      var usersFromRepo = await _knockRepository.GetUsersAsync();
+    // [HttpPost("register")]
+    // public async Task<ActionResult<UserForRegistrationDto>> RegisterUser(UserForRegistrationDto user)
+    // {
 
-      return Ok(_mapper.Map<IEnumerable<UserDto>>(usersFromRepo));
-    }
+    // }
   }
 }
