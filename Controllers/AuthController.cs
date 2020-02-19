@@ -1,10 +1,14 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Knock.API.Models;
 using Knock.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Knock.API.Controllers
 {
@@ -40,7 +44,24 @@ namespace Knock.API.Controllers
         return Unauthorized(new { message = "Invalid Email or Password" });
       }
 
-      return Ok();
+      var tokenHandler = new JwtSecurityTokenHandler();
+      byte [] key = Encoding.ASCII.GetBytes("randomstuff");
+      var tokenDescriptor = new SecurityTokenDescriptor 
+      { 
+        Subject = new ClaimsIdentity(
+          new Claim[] 
+          {
+            new Claim(ClaimTypes.Name, user.Id.ToString())
+          }),
+          Expires = DateTime.UtcNow.AddDays(7),
+          SigningCredentials  = new SigningCredentials(new SymmetricSecurityKey(key), 
+                                    SecurityAlgorithms.HmacSha256Signature)
+      };
+
+      var token = tokenHandler.CreateToken(tokenDescriptor);
+      var tokenString = tokenHandler.WriteToken(token);
+
+      return Ok(new { Token = token, Id = user.Id });
     }
   }
 }
