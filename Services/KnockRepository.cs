@@ -187,6 +187,16 @@ namespace Knock.API.Services
       _context.Users.Add(user);
     }
 
+    public async Task<bool> EmailExists(string email)
+    {
+      if(string.IsNullOrWhiteSpace(email))
+      {
+        throw new ArgumentNullException(nameof(email));
+      }
+
+      return await _context.Users.AnyAsync(u => u.Email == email);
+    }
+
     public void UpdateUser(User user)
     {
       throw new NotImplementedException();

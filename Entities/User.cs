@@ -18,6 +18,7 @@ namespace Knock.API.Entities
 
     [Required]
     [MaxLength(50)]
+    [EmailAddress]
     #nullable disable
     public string Email { get; set; }
 

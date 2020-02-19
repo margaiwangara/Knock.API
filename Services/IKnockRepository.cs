@@ -34,6 +34,7 @@ namespace Knock.API.Services
 
     // Auth
     Task<User> Authenticated(string email, string password);
+    Task<bool> EmailExists(string email);
 
   }
 }

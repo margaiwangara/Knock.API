@@ -56,6 +56,12 @@ namespace Knock.API.Controllers
         return BadRequest();
       }
 
+      // check is email exists
+      if(await _knockRepository.EmailExists(user.Email))
+      {
+        return BadRequest(new { message = "Email already exists" });
+      }
+
       var mappedUser = _mapper.Map<User>(user);
       _knockRepository.AddUser(mappedUser);
       await _knockRepository.SaveChangesAsync();
@@ -63,9 +69,9 @@ namespace Knock.API.Controllers
       var remappedUser = _mapper.Map<UserDto>(mappedUser);
 
       // get token
-      // string token = GenerateAuthToken(remappedUser);
+      string token = GenerateAuthToken(remappedUser);
 
-      return Ok(remappedUser);
+      return Ok(new { Id = remappedUser.Id, Token = token });
 
     }
 
