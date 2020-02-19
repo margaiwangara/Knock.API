@@ -155,5 +155,36 @@ namespace Knock.API.Services
     {
       _context.Reviews.Remove(review);
     }
+
+    public async Task<IEnumerable<User>> GetUsersAsync()
+    {
+      return await _context.Users.ToListAsync();
+    }
+
+    public  async Task<User> GetUserAsync(Guid userId)
+    {
+      if(userId == Guid.Empty)
+      {
+        throw new ArgumentNullException(nameof(userId));
+      }
+
+      // get user data
+      return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+    }
+
+    public void AddUser(User user)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void UpdateUser(User user)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void DeleteUser(User user)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

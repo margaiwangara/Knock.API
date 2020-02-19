@@ -25,6 +25,13 @@ namespace Knock.API.Services
     void UpdateReview(Review review);
     void DeleteReview(Review review);
 
+    // Users
+    Task<IEnumerable<User>> GetUsersAsync();
+    Task<User> GetUserAsync(Guid userId);
+    void AddUser(User user);
+    void UpdateUser(User user);
+    void DeleteUser(User user);
+
 
   }
 }
