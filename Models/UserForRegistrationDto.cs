@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Knock.API.ValidationAttributes;
 
 namespace Knock.API.Models
 {
+  [PasswordMustNotBeEqualToEmail]
   public class UserForRegistrationDto
   {
     public Guid Id { get; set; }
