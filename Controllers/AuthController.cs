@@ -32,17 +32,19 @@ namespace Knock.API.Controllers
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserForRegistrationDto user)
     {
-      var isAuthenticated = await _knockRepository.isAuthenticated(user.Email, user.Password);
+      
+      var userFromRepo = await _knockRepository.Authenticated(user.Email, user.Password);
 
-      if(isAuthenticated == false)
+      if(userFromRepo == null)
       {
-        return Unauthorized(new { message = "Invalid Email or Password" });
+        return Unauthorized(new { message = "Invalid Email or Password"});
       }
 
-      var mappedUser = _mapper.Map<UserDto>(user);
+      // map to dto
+      var mappedUser = _mapper.Map<UserDto>(userFromRepo);
       string token = GenerateAuthToken(mappedUser);
 
-      return Ok(new { Token = token, Id = mappedUser.Id });
+      return Ok(new { Id = mappedUser.Id, Token = token });
     }
 
     [HttpPost("register")]
@@ -61,9 +63,9 @@ namespace Knock.API.Controllers
       var remappedUser = _mapper.Map<UserDto>(mappedUser);
 
       // get token
-      string token = GenerateAuthToken(remappedUser);
+      // string token = GenerateAuthToken(remappedUser);
 
-      return Ok(new { Id = remappedUser.Id, Token = token });
+      return Ok(remappedUser);
 
     }
 
@@ -71,7 +73,7 @@ namespace Knock.API.Controllers
     {
 
       var tokenHandler = new JwtSecurityTokenHandler();
-        byte [] key = Encoding.ASCII.GetBytes("randomstuff");
+        var key = Encoding.ASCII.GetBytes("randomstuffthatiamsupposedtowritehere");
         var tokenDescriptor = new SecurityTokenDescriptor 
         { 
           Subject = new ClaimsIdentity(

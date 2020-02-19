@@ -33,7 +33,7 @@ namespace Knock.API.Services
     void DeleteUser(User user);
 
     // Auth
-    Task<bool> isAuthenticated(string email, string password);
+    Task<User> Authenticated(string email, string password);
 
   }
 }

@@ -198,9 +198,20 @@ namespace Knock.API.Services
     }
 
     // Auth
-    public async Task<bool> isAuthenticated(string email, string password)
+    public async Task<User> Authenticated(string email, string password)
     {
-      return await _context.Users.AnyAsync(u => u.Email == u.Password);
+      // email and password exist
+      if(string.IsNullOrWhiteSpace(email))
+      {
+        throw new ArgumentNullException(nameof(email));
+      }
+
+      if(string.IsNullOrWhiteSpace(password))
+      {
+        throw new ArgumentNullException(nameof(password));
+      }
+      
+      return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
     }
   }
 }
