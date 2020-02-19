@@ -135,9 +135,9 @@ Mesela, `/api/restaurantcollections/({ids})` boyle bir uri girersek, bu idler ol
 
 Bu projeyi hala yapiliyor ve bir kac gelistirmeyi yapmaya dusunuyorum zamanla.
 
-- [] SqlServer'i veritabani olarak kullanacagim
-- [] Search, Filter ve Pagination
-- [] Authentication ve Authorization - Identity ya da JWT kullanarak
-- [] XML Request ve Response destek `// oldugunu dusunuyorum`
-- [] Docker kullanarak mikroservise ayirmak - Restaurants ve Reviews iki servise ayirarak
-- [] Hosting - Azure Cloud
+- [ ] SqlServer'i veritabani olarak kullanacagim
+- [ ] Search, Filter ve Pagination
+- [ ] Authentication ve Authorization - Identity ya da JWT kullanarak
+- [ ] XML Request ve Response destek `// oldugunu dusunuyorum`
+- [ ] Docker kullanarak mikroservise ayirmak - Restaurants ve Reviews iki servise ayirarak
+- [ ] Hosting - Azure Cloud
