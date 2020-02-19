@@ -7,7 +7,12 @@ namespace Knock.API.Models
   [PasswordMustNotBeEqualToEmail(ErrorMessage="Password and Email fields must not be equal")]
   public class UserForRegistrationDto
   {
-    public Guid Id { get; set; }
+
+    [MaxLength(100, ErrorMessage="Maximum name length is 100 chars")]
+    public string Name { get; set; }
+
+    [MaxLength(100, ErrorMessage="Maximum surname length is 100 chars")]
+    public string Surname { get; set; }
 
     [Required(ErrorMessage="Email field is required")]
     [EmailAddress(ErrorMessage="Invalid Email Address")]

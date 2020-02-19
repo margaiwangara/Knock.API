@@ -174,7 +174,17 @@ namespace Knock.API.Services
 
     public void AddUser(User user)
     {
-      throw new NotImplementedException();
+      // check if user if null
+      if(user == null)
+      {
+        throw new ArgumentNullException(nameof(user));
+      }
+
+      // generate user id
+      user.Id = Guid.NewGuid();
+      
+      // add user to db
+      _context.Users.Add(user);
     }
 
     public void UpdateUser(User user)

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Knock.API.Entities;
 using Knock.API.Models;
 using Knock.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -28,12 +29,6 @@ namespace Knock.API.Controllers
                 throw new ArgumentNullException(nameof(mapper));
     }
 
-    // [HttpPost("register")]
-    // public async Task<ActionResult<UserForRegistrationDto>> RegisterUser(UserForRegistrationDto user)
-    // {
-
-    // }
-
     [HttpPost("login")]
     public async Task<IActionResult> Login(UserForRegistrationDto user)
     {
@@ -44,13 +39,37 @@ namespace Knock.API.Controllers
         return Unauthorized(new { message = "Invalid Email or Password" });
       }
 
-      string token = GenerateAuthToken(user);
+      var mappedUser = _mapper.Map<UserDto>(user);
+      string token = GenerateAuthToken(mappedUser);
 
-      return Ok(new { Token = token, Id = user.Id });
+      return Ok(new { Token = token, Id = mappedUser.Id });
     }
 
-    private string GenerateAuthToken(UserForRegistrationDto user)
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterUser(UserForRegistrationDto user)
     {
+      // check if user is null
+      if(user == null)
+      {
+        return BadRequest();
+      }
+
+      var mappedUser = _mapper.Map<User>(user);
+      _knockRepository.AddUser(mappedUser);
+      await _knockRepository.SaveChangesAsync();
+      
+      var remappedUser = _mapper.Map<UserDto>(mappedUser);
+
+      // get token
+      string token = GenerateAuthToken(remappedUser);
+
+      return Ok(new { Id = remappedUser.Id, Token = token });
+
+    }
+
+    private string GenerateAuthToken(UserDto user)
+    {
+
       var tokenHandler = new JwtSecurityTokenHandler();
         byte [] key = Encoding.ASCII.GetBytes("randomstuff");
         var tokenDescriptor = new SecurityTokenDescriptor 
