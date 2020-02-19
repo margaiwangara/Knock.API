@@ -1,10 +1,14 @@
 using System;
+using System.Threading.Tasks;
 using AutoMapper;
+using Knock.API.Models;
 using Knock.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
 {
+  [AllowAnonymous]
   [ApiController]
   [Route("api/auth")]
   public class AuthController : ControllerBase
@@ -25,5 +29,18 @@ namespace Knock.API.Controllers
     // {
 
     // }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(UserForRegistrationDto user)
+    {
+      var isAuthenticated = await _knockRepository.isAuthenticated(user.Email, user.Password);
+
+      if(isAuthenticated == false)
+      {
+        return Unauthorized(new { message = "Invalid Email or Password" });
+      }
+
+      return Ok();
+    }
   }
 }

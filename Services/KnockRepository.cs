@@ -186,5 +186,11 @@ namespace Knock.API.Services
     {
       throw new NotImplementedException();
     }
+
+    // Auth
+    public async Task<bool> isAuthenticated(string email, string password)
+    {
+      return await _context.Users.AnyAsync(u => u.Email == u.Password);
+    }
   }
 }
