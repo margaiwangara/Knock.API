@@ -172,6 +172,17 @@ namespace Knock.API.Services
       return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
     }
 
+    public User GetUser(Guid userId)
+    {
+      if(userId == Guid.Empty)
+      {
+        throw new ArgumentNullException(nameof(userId));
+      }
+
+      // get user data
+      return _context.Users.FirstOrDefault(u => u.Id == userId);
+    }
+
     public void AddUser(User user)
     {
       // check if user if null

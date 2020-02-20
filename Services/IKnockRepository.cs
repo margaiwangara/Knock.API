@@ -28,6 +28,7 @@ namespace Knock.API.Services
     // Users
     Task<IEnumerable<User>> GetUsersAsync();
     Task<User> GetUserAsync(Guid userId);
+    User GetUser(Guid userId);
     void AddUser(User user);
     void UpdateUser(User user);
     void DeleteUser(User user);

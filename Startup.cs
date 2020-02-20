@@ -61,10 +61,11 @@ namespace Knock.API
                 {
                     OnTokenValidated = context => 
                     {
-                        var userService = context.HttpContext.RequestServices.GetRequiredService<IKnockRepository>();
+                        var knockRepository = context.HttpContext.RequestServices.GetRequiredService<IKnockRepository>();
                         var userId = Guid.Parse(context.Principal.Identity.Name);
-                        var user = userService.GetUserAsync(userId);
 
+                        var user = knockRepository.GetUserAsync(userId);
+                
                         if(user == null)
                         {
                             context.Fail("Unauthorized Access");
