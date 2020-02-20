@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Knock.API.Entities;
+using Knock.API.Helpers;
 using Knock.API.Models;
 using Knock.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Knock.API.Controllers
@@ -20,13 +22,19 @@ namespace Knock.API.Controllers
   {
     private readonly IKnockRepository _knockRepository;
     private readonly IMapper _mapper;
+
+    private readonly AppSettings _settings;
     
-    public AuthController(IKnockRepository knockRepository, IMapper mapper)
+    public AuthController(IKnockRepository knockRepository, IMapper mapper,
+                              IOptions<AppSettings> settings)
     {
       _knockRepository = knockRepository ??
                 throw new ArgumentNullException(nameof(knockRepository));
       _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
+      _settings = settings.Value ??
+                throw new ArgumentNullException(nameof(settings));
+      
     }
 
     [HttpPost("login")]
@@ -37,7 +45,7 @@ namespace Knock.API.Controllers
 
       if(userFromRepo == null)
       {
-        return Unauthorized(new { message = "Invalid Email or Password"});
+        return Unauthorized(new { message = "Invalid Email or Password" });
       }
 
       // map to dto
@@ -96,6 +104,22 @@ namespace Knock.API.Controllers
         var tokenString = tokenHandler.WriteToken(token);
 
         return tokenString;
+    }
+
+    // Hash Password
+    private static void CreatePasswordHash(string password)
+    {
+      if(string.IsNullOrWhiteSpace(password))
+      {
+        throw new ArgumentNullException(nameof(password));
+      }
+
+      using(var hmac = new System.Security.Cryptography.HMACSHA512())
+      {
+        var salt = hmac.Key;
+        var hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+      }
+
     }
     
   }
