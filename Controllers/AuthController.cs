@@ -1,6 +1,8 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -22,18 +24,20 @@ namespace Knock.API.Controllers
   {
     private readonly IKnockRepository _knockRepository;
     private readonly IMapper _mapper;
+    private readonly AppSettings _options;
 
-    private readonly AppSettings _settings;
+    private const int KeySize = 32;
+    private const int SaltSize = 16;
     
     public AuthController(IKnockRepository knockRepository, IMapper mapper,
-                              IOptions<AppSettings> settings)
+                              IOptions<AppSettings> options)
     {
       _knockRepository = knockRepository ??
                 throw new ArgumentNullException(nameof(knockRepository));
       _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
-      _settings = settings.Value ??
-                throw new ArgumentNullException(nameof(settings));
+      _options = options.Value ??
+                throw new ArgumentNullException(nameof(options));
       
     }
 
@@ -105,6 +109,52 @@ namespace Knock.API.Controllers
         var tokenString = tokenHandler.WriteToken(token);
 
         return tokenString;
+    }
+
+    private string GeneratePasswordHash(string password)
+    {
+      using(var algorithm = new Rfc2898DeriveBytes(
+        password,
+        SaltSize,
+        _options.Iterations,
+        HashAlgorithmName.SHA256
+      ))
+      {
+        var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+        var salt = Convert.ToBase64String(algorithm.Salt);
+
+        return $"{_options.Iterations}.{salt}.{key}";
+      }
+
+    }
+
+    private (bool Verified, bool NeedsUpgrade) VerifyPassword(string hash, string password)
+    {
+      var parts = hash.Split(".", 3);
+
+      if(parts.Length != 3)
+      {
+        throw new FormatException("Unexpected hash format");
+      }
+
+      var iterations = Convert.ToInt32(parts[0]);
+      var salt = Convert.FromBase64String(parts[1]);
+      var key = Convert.FromBase64String(parts[2]);
+
+      var needsUpgrade = iterations != _options.Iterations;
+
+      using(var algorithm = new Rfc2898DeriveBytes(
+        password,
+        salt,
+        iterations,
+        HashAlgorithmName.SHA256
+      ))
+      {
+        var keyToCheck = algorithm.GetBytes(KeySize);
+        var verified = keyToCheck.SequenceEqual(key);
+
+        return (verified, needsUpgrade);
+      }
     }
 
     
