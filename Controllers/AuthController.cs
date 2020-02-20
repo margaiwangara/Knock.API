@@ -69,6 +69,7 @@ namespace Knock.API.Controllers
       {
         return BadRequest(new { message = "Email already exists" });
       }
+      
 
       var mappedUser = _mapper.Map<User>(user);
       _knockRepository.AddUser(mappedUser);
@@ -106,21 +107,6 @@ namespace Knock.API.Controllers
         return tokenString;
     }
 
-    // Hash Password
-    private static void CreatePasswordHash(string password)
-    {
-      if(string.IsNullOrWhiteSpace(password))
-      {
-        throw new ArgumentNullException(nameof(password));
-      }
-
-      using(var hmac = new System.Security.Cryptography.HMACSHA512())
-      {
-        var salt = hmac.Key;
-        var hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-      }
-
-    }
     
   }
   

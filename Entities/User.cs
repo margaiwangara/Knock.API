@@ -18,13 +18,16 @@ namespace Knock.API.Entities
 
     [Required]
     [MaxLength(50)]
-    [EmailAddress]
     #nullable disable
     public string Email { get; set; }
 
     [Required]
     #nullable disable
-    public string Password { get; set; }
+    public byte [] PasswordHash { get; set; }
+
+    [Required]
+    #nullable disable
+    public byte [] PasswordSalt { get; set; }
     public DateTimeOffset DateCreated { get; set; }
       = DateTimeOffset.UtcNow;
   }
