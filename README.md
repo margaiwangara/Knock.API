@@ -25,8 +25,8 @@ Authentication icin `registration` ve `login` routeler var.
 ```yaml
 
   - POST
-    - "/api/register" # registration
-    - "/api/login" #login
+    - "/api/auth/register" # registration
+    - "/api/auth/login" #login
 
 ```
 
