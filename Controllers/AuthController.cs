@@ -73,8 +73,16 @@ namespace Knock.API.Controllers
       {
         return BadRequest(new { message = "Email already exists" });
       }
-      
+      // get hashed password
+      var HashedPassword = GeneratePasswordHash(user.Password);
 
+      if(string.IsNullOrWhiteSpace(HashedPassword))
+      {
+        throw new ArgumentException(nameof(HashedPassword));
+      }
+
+      // equate password to password hash
+      user.Password = HashedPassword;
       var mappedUser = _mapper.Map<User>(user);
       _knockRepository.AddUser(mappedUser);
       await _knockRepository.SaveChangesAsync();
