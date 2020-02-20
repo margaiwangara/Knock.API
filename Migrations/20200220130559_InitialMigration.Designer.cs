@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Knock.API.Migrations
 {
     [DbContext(typeof(KnockContext))]
-    [Migration("20200220124445_InitialMigration")]
+    [Migration("20200220130559_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,19 +94,18 @@ namespace Knock.API.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
-                    b.Property<byte[]>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("BLOB");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("BLOB");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

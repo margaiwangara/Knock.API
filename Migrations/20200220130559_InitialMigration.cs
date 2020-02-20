@@ -31,8 +31,7 @@ namespace Knock.API.Migrations
                     Name = table.Column<string>(maxLength: 100, nullable: true),
                     Surname = table.Column<string>(maxLength: 100, nullable: true),
                     Email = table.Column<string>(maxLength: 50, nullable: false),
-                    PasswordHash = table.Column<byte[]>(nullable: false),
-                    PasswordSalt = table.Column<byte[]>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
@@ -65,6 +64,12 @@ namespace Knock.API.Migrations
                 name: "IX_Reviews_RestaurantId",
                 table: "Reviews",
                 column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

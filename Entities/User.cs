@@ -23,11 +23,7 @@ namespace Knock.API.Entities
 
     [Required]
     #nullable disable
-    public byte [] PasswordHash { get; set; }
-
-    [Required]
-    #nullable disable
-    public byte [] PasswordSalt { get; set; }
+    public string Password { get; set; }
     public DateTimeOffset DateCreated { get; set; }
       = DateTimeOffset.UtcNow;
   }

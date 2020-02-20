@@ -92,19 +92,18 @@ namespace Knock.API.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
-                    b.Property<byte[]>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("BLOB");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("BLOB");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
                         .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

@@ -13,9 +13,9 @@ namespace Knock.API.DbContexts
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     { 
-      // modelBuilder.Entity<User>()
-      //             .HasIndex(i => i.Email)
-      //             .IsUnique();
+      modelBuilder.Entity<User>()
+                  .HasIndex(i => i.Email)
+                  .IsUnique();
 
     }
   }
