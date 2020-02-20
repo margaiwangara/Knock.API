@@ -55,7 +55,7 @@ namespace Knock.API.Controllers
       // check if password matches
       var verified = VerifyPassword(userFromRepo.Password, user.Password);
 
-      if(verified.Verified == false || verified.NeedsUpgrade == false)
+      if(verified.Verified == false)
       {
         return Unauthorized(new { message = "Invalid Username or Password" });
       }
@@ -108,7 +108,7 @@ namespace Knock.API.Controllers
     {
 
       var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes("randomstuffthatiamsupposedtowritehere");
+        var key = Encoding.ASCII.GetBytes(_options.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor 
         { 
           Subject = new ClaimsIdentity(

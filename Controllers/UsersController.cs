@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Knock.API.Models;
 using Knock.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
 {
   [ApiController]
   [Route("api/users")]
+  [Authorize]
   public class UsersController : ControllerBase
   {
     private readonly IKnockRepository _knockRepository;
