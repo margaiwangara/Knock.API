@@ -55,11 +55,11 @@ namespace Knock.API.Controllers
       // check if password matches
       var verified = VerifyPassword(userFromRepo.Password, user.Password);
 
-      if(verified.Verified == false)
+      if(verified.Verified == false || verified.NeedsUpgrade == false)
       {
         return Unauthorized(new { message = "Invalid Username or Password" });
       }
-      
+
       // map to dto
       var mappedUser = _mapper.Map<UserDto>(userFromRepo);
       string token = GenerateAuthToken(mappedUser);
