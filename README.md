@@ -18,6 +18,20 @@ Bu projeyi ASP.NET Core 3.1 kullanarak yapıyorum. Lokantalari degerlendirmek ic
 
 Bu projede iki temel route var, lokantalar ve yorumlar icin. Once lokantalarin verileri girilecek sonra o lokantalarin yorumlari eklenecektir.
 
+##### Authentication ve Authorization
+
+Authentication icin `registration` ve `login` routeler var.
+
+```yaml
+
+  - POST
+    - "/api/register" # registration
+    - "/api/login" #login
+
+```
+
+Yeni bir hesabi kuruldugunda ya da kuruldugu hesaba girildiginde kullanicinin Id ve Token geri gonderiliyor. Bu token kullanarak, yasak route'lara girilebiliyor.
+
 ##### Lokantalar
 
 Lokantalar icin bir kac tane sutun vardir.
@@ -136,10 +150,9 @@ Mesela, `/api/restaurantcollections/({ids})` boyle bir uri girersek, bu idler ol
 Bu projeyi hala yapiliyor ve bir kac gelistirmeyi yapmaya dusunuyorum zamanla.
 
 - [x] Authentication - Identity ya da **JWT** Kullanarak
-- [ ] Authorization
+- [x] Authorization
 - [ ] Search, Filter ve Pagination
 - [ ] XML Request ve Response destek
 - [ ] Hosting - Azure Cloud
 - [ ] SqlServer'i veritabani olarak kullanacagim
 - [ ] Docker kullanarak mikroservise ayirmak - Restaurants ve Reviews iki servise ayirarak
-
