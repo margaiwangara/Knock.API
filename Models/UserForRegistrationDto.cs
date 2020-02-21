@@ -22,6 +22,9 @@ namespace Knock.API.Models
     [Required(ErrorMessage="Password field is required")]
     [MinLength(6, ErrorMessage="Minimum password length is 6 chars")]
     public string Password { get; set; }
+    public string Role { get; set; }
     public string Token { get; set; }
+
+  
   }
 }

@@ -91,6 +91,9 @@ namespace Knock.API.Controllers
 
       // equate password to password hash
       user.Password = HashedPassword;
+
+      // check role
+      user.Role = Role.User;
       var mappedUser = _mapper.Map<User>(user);
       _knockRepository.AddUser(mappedUser);
       await _knockRepository.SaveChangesAsync();
