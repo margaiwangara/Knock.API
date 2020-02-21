@@ -3,14 +3,16 @@ using System;
 using Knock.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Knock.API.Migrations
 {
     [DbContext(typeof(KnockContext))]
-    partial class KnockContextModelSnapshot : ModelSnapshot
+    [Migration("20200221141038_AddedRoleColumnToUserTable")]
+    partial class AddedRoleColumnToUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +64,7 @@ namespace Knock.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<byte>("Rating")
-                        .HasColumnType("decimal(2,2)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("TEXT");

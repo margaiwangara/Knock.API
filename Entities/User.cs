@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Knock.API.Entities
@@ -24,6 +25,10 @@ namespace Knock.API.Entities
     [Required]
     #nullable disable
     public string Password { get; set; }
+
+    [Required]
+    [DefaultValue("user")]
+    public string Role { get; set; }
     public DateTimeOffset DateCreated { get; set; }
       = DateTimeOffset.UtcNow;
   }

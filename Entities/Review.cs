@@ -14,6 +14,8 @@ namespace Knock.API.Entities
     public string Content { get; set; }
 
     [Range(0, 5)]
+    [Column(TypeName = "decimal(2,2)")]
+
     public byte Rating { get; set; } = 0;
 
     [ForeignKey("RestaurantId")]
