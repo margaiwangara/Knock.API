@@ -7,11 +7,13 @@ using Knock.API.Entities;
 using Knock.API.Helpers;
 using Knock.API.Models;
 using Knock.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
 {
   [ApiController]
+  [Authorize(Roles = Role.Admin)]
   [Route("api/restaurantcollections")]
   public class RestaurantCollectionsController : ControllerBase
   {
@@ -28,6 +30,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet("({ids})", Name="GetRestaurantCollection")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurantCollection(
                   [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {

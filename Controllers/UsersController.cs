@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Knock.API.Entities;
 using Knock.API.Models;
 using Knock.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,7 @@ namespace Knock.API.Controllers
 {
   [ApiController]
   [Route("api/users")]
-  [Authorize]
+  [Authorize(Roles = Role.Admin)]
   public class UsersController : ControllerBase
   {
     private readonly IKnockRepository _knockRepository;

@@ -7,6 +7,7 @@ using Knock.API.Entities;
 using Knock.API.Helpers;
 using Knock.API.Models;
 using Knock.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
@@ -56,6 +57,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreateReviewCollectionForRestaurant(Guid restaurantId,
         IEnumerable<ReviewForCreationDto> reviewCollection)
     {

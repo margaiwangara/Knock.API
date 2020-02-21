@@ -5,11 +5,13 @@ using AutoMapper;
 using Knock.API.Entities;
 using Knock.API.Models;
 using Knock.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
 {
   [ApiController]
+  [Authorize]
   [Route("api/restaurants/{restaurantId}/reviews")]
   public class ReviewsController : ControllerBase
   {
@@ -24,6 +26,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet()]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviewsForRestaurant()
     {
       var reviews = await _knockRepository.GetReviewsAsync();
@@ -32,6 +35,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet("{reviewId}", Name="GetReviewForRestaurant")]
+    [AllowAnonymous]
     public async Task<ActionResult<ReviewDto>> GetReviewForRestaurant(Guid restaurantId, Guid reviewId)
     {
       // check if restaurant exists

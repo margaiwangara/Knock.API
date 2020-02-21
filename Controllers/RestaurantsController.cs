@@ -5,12 +5,14 @@ using AutoMapper;
 using Knock.API.Entities;
 using Knock.API.Models;
 using Knock.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knock.API.Controllers
 {
   [ApiController]
+  [Authorize(Roles = Role.Admin)]
   [Route("api/restaurants")]
   public class RestaurantsController : ControllerBase
   {
@@ -25,6 +27,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet()]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants()
     {
       var restaurants = await _knockRepository.GetRestaurantsAsync();
@@ -33,6 +36,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet("{restaurantId}")]
+    [AllowAnonymous]
     public async Task<ActionResult<RestaurantDto>> GetRestaurant(Guid restaurantId)
     {
       var restaurant = await _knockRepository.GetRestaurantAsync(restaurantId);
