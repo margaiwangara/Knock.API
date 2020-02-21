@@ -32,7 +32,7 @@ namespace Knock.API.Migrations
                     Surname = table.Column<string>(maxLength: 100, nullable: true),
                     Email = table.Column<string>(maxLength: 50, nullable: false),
                     Password = table.Column<string>(nullable: false),
-                    Role = table.Column<string>(nullable: false, defaultValue: "user"),
+                    Role = table.Column<string>(nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
@@ -48,6 +48,7 @@ namespace Knock.API.Migrations
                     Content = table.Column<string>(maxLength: 200, nullable: false),
                     Rating = table.Column<byte>(type: "decimal(2,2)", nullable: false),
                     RestaurantId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
@@ -59,12 +60,23 @@ namespace Knock.API.Migrations
                         principalTable: "Restaurants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_RestaurantId",
                 table: "Reviews",
                 column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -79,10 +91,10 @@ namespace Knock.API.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Restaurants");
 
             migrationBuilder.DropTable(
-                name: "Restaurants");
+                name: "Users");
         }
     }
 }

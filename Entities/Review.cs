@@ -21,6 +21,10 @@ namespace Knock.API.Entities
     [ForeignKey("RestaurantId")]
     public Restaurant Restaurant { get; set; }
     public Guid RestaurantId { get; set; }
+
+    [ForeignKey("UserId")]
+    public User User { get; set; }
+    public Guid UserId { get;set; }
     public DateTimeOffset DateCreated { get; set; }
      = DateTimeOffset.UtcNow;
   }

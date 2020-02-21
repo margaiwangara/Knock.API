@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Knock.API.Controllers
 {
   [ApiController]
+  [Authorize]
   [Route("api/restaurants/{restaurantId}/reviewcollections")]
   public class ReviewCollectionsController : ControllerBase
   {
@@ -29,6 +30,7 @@ namespace Knock.API.Controllers
     }
 
     [HttpGet("({reviewIds})", Name="GetReviewCollectionForRestaurant")]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviewCollectionForRestaurant(Guid restaurantId, 
                       [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> reviewIds)
     {
@@ -57,7 +59,6 @@ namespace Knock.API.Controllers
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> CreateReviewCollectionForRestaurant(Guid restaurantId,
         IEnumerable<ReviewForCreationDto> reviewCollection)
     {

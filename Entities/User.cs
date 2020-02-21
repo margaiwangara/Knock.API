@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -31,5 +32,8 @@ namespace Knock.API.Entities
     public string Role { get; set; }
     public DateTimeOffset DateCreated { get; set; }
       = DateTimeOffset.UtcNow;
+
+    public ICollection<Review> Reviews { get; set; }
+        = new List<Review>();
   }
 }
