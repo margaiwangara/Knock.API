@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Knock.API.Entities;
@@ -17,12 +18,14 @@ namespace Knock.API.Controllers
   {
     private readonly IKnockRepository _knockRepository;
     private readonly IMapper _mapper;
+
     public ReviewsController(IKnockRepository knockRepository, IMapper mapper)
     {
         _knockRepository = knockRepository ??
                     throw new ArgumentNullException(nameof(knockRepository));
         _mapper = mapper ??
                     throw new ArgumentNullException(nameof(mapper));
+
     }
 
     [HttpGet()]
@@ -67,6 +70,10 @@ namespace Knock.API.Controllers
       // map review to review
       var reviewEntity = _mapper.Map<Review>(review);
 
+      // get user
+     Guid sender = Guid.Parse(User.FindFirst(ClaimTypes.Name)?.Value);
+
+      reviewEntity.UserId = sender;
       // if exists add review
       _knockRepository.AddReview(restaurantId, reviewEntity);
       await _knockRepository.SaveChangesAsync();
@@ -74,6 +81,7 @@ namespace Knock.API.Controllers
       // remap to dto
       var reviewToReturn = _mapper.Map<ReviewDto>(reviewEntity);
 
+      
       return CreatedAtRoute(nameof(GetReviewForRestaurant),
                 new { restaurantId = restaurantId, reviewId = reviewToReturn.Id }, 
                 reviewToReturn);

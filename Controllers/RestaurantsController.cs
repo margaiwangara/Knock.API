@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Knock.API.Entities;
@@ -62,7 +63,7 @@ namespace Knock.API.Controllers
       await _knockRepository.SaveChangesAsync();
 
       var mappedRestaurant = _mapper.Map<RestaurantDto>(restaurantEntity);
-
+      
       return CreatedAtAction(nameof(GetRestaurant), 
                   new { restaurantId = mappedRestaurant.Id }, restaurant);
     }
