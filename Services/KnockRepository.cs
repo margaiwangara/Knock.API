@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Knock.API.ResourceParameters;
 
 namespace Knock.API.Services
 {
@@ -20,6 +21,32 @@ namespace Knock.API.Services
     public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync()
     {
       return await _context.Restaurants.ToListAsync<Restaurant>();
+    }
+
+    public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync(RestaurantResourceParameters restaurantParams)
+    {
+      if(restaurantParams == null)
+      {
+        throw new ArgumentNullException(nameof(restaurantParams));
+      }
+
+      // check if both is null
+      if(string.IsNullOrWhiteSpace(restaurantParams.MainCategory)
+            && string.IsNullOrWhiteSpace(restaurantParams.SearchQuery))
+      {
+        return await GetRestaurantsAsync();
+      }
+
+      var collection = _context.Restaurants as IQueryable<Restaurant>;
+
+      if(!string.IsNullOrWhiteSpace(restaurantParams.SearchQuery))
+      {
+        var searchQuery = restaurantParams.SearchQuery.Trim();
+        collection = collection.Where(r => r.Name.Contains(searchQuery) 
+                                        || r.Address.Contains(searchQuery));
+      }
+
+      return await collection.ToListAsync();
     }
 
     public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync(IEnumerable<Guid> restaurantIds)

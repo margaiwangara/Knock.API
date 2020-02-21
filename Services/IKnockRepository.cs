@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Knock.API.Entities;
+using Knock.API.ResourceParameters;
 
 namespace Knock.API.Services
 {
@@ -9,6 +10,7 @@ namespace Knock.API.Services
   {
     // Restaurants
     Task<IEnumerable<Restaurant>> GetRestaurantsAsync();
+    Task<IEnumerable<Restaurant>> GetRestaurantsAsync(RestaurantResourceParameters restaurantParams);
     Task<IEnumerable<Restaurant>> GetRestaurantsAsync(IEnumerable<Guid> restaurantIds);
     Task<Restaurant> GetRestaurantAsync(Guid restaurantId);
     void AddRestaurant(Restaurant restaurant);
