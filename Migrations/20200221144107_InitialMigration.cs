@@ -32,7 +32,7 @@ namespace Knock.API.Migrations
                     Surname = table.Column<string>(maxLength: 100, nullable: true),
                     Email = table.Column<string>(maxLength: 50, nullable: false),
                     Password = table.Column<string>(nullable: false),
-                    Role = table.Column<string>(nullable: false),
+                    Role = table.Column<string>(nullable: false, defaultValue: "user"),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>

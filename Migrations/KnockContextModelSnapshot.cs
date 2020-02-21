@@ -98,8 +98,7 @@ namespace Knock.API.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue("user");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
                         .HasColumnType("TEXT")

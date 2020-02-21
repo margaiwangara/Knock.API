@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Knock.API.Migrations
 {
     [DbContext(typeof(KnockContext))]
-    [Migration("20200221142302_InitialMigration")]
+    [Migration("20200221144107_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,8 +100,7 @@ namespace Knock.API.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue("user");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Surname")
                         .HasColumnType("TEXT")
