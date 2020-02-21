@@ -20,6 +20,8 @@ Bu projede iki temel route var, lokantalar ve yorumlar icin. Once lokantalarin v
 
 ##### Authentication ve Authorization
 
+###### Authentication
+
 Authentication icin `registration` ve `login` routeler var.
 
 ```yaml
@@ -31,6 +33,10 @@ Authentication icin `registration` ve `login` routeler var.
 ```
 
 Yeni bir hesabi kuruldugunda ya da kuruldugu hesaba girildiginde kullanicinin Id ve Token geri gonderiliyor. Bu token kullanarak, yasak route'lara girilebiliyor.
+
+###### Authorization
+
+Kullanici `admin` olmasi lazim bir lokantanin verileri eklemek, silmek yada guncellemek icin. Yorumalar ise bir kullanicinin hesabi olmak zorunda. Hesabi actiktan sonra alinacak tokeni kullanarak bir yorum yazabiliyor. Bunun icin `admin` olmasi gerek yok, normal `user` rolu olan yapabiliyor. Yeni kullanicilar eklemek, silmek ya da guncellemek icin kullanici `admin` olmasi lazim.
 
 ##### Lokantalar
 
