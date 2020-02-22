@@ -1,5 +1,3 @@
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Knock.API.Models
 {

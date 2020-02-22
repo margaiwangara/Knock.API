@@ -10,6 +10,6 @@ namespace Knock.API.Models
     public string Content { get; set; }
 
     [Range(0, 5, ErrorMessage="Rating must be between 0 and 5")]
-    public virtual decimal Rating { get; set; }
+    public virtual double Rating { get; set; }
   }
 }
