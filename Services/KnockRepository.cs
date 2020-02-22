@@ -23,6 +23,31 @@ namespace Knock.API.Services
       return await _context.Restaurants.ToListAsync<Restaurant>();
     }
 
+    private IQueryable<Restaurant> SortRestaurant(string sort, 
+                            IQueryable<Restaurant> collection)
+    {
+
+      if(!string.IsNullOrWhiteSpace(sort))
+      {
+        switch(sort.Trim())
+        {
+          case "name":
+            collection = collection.OrderBy(c => c.Name);
+            break;
+          case "name_desc":
+            collection = collection.OrderByDescending(c => c.Name);
+            break;
+          case "date_asc":
+            collection = collection.OrderBy(c => c.DateCreated);
+            break;
+          default:
+            collection = collection.OrderByDescending(c => c.DateCreated);
+            break;
+        }
+      }
+    
+      return collection;
+    }
     public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync(RestaurantResourceParameters restaurantParams)
     {
       if(restaurantParams == null)
@@ -32,7 +57,8 @@ namespace Knock.API.Services
 
       // check if both is null
       if(string.IsNullOrWhiteSpace(restaurantParams.MainCategory)
-            && string.IsNullOrWhiteSpace(restaurantParams.SearchQuery))
+            && string.IsNullOrWhiteSpace(restaurantParams.SearchQuery)
+            && string.IsNullOrWhiteSpace(restaurantParams.Sort))
       {
         return await GetRestaurantsAsync();
       }
@@ -46,7 +72,9 @@ namespace Knock.API.Services
                                         || r.Address.Contains(searchQuery));
       }
 
-      return await collection.ToListAsync();
+      // sort query
+      collection = SortRestaurant(restaurantParams.Sort, collection);
+      return await collection.AsNoTracking().ToListAsync();
     }
 
     public async Task<IEnumerable<Restaurant>> GetRestaurantsAsync(IEnumerable<Guid> restaurantIds)
