@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Knock.API.Entities;
 using Knock.API.Models;
+using Knock.API.ResourceParameters;
 using Knock.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +30,10 @@ namespace Knock.API.Controllers
 
     [HttpGet()]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants()
+    public async Task<ActionResult<IEnumerable<RestaurantDto>>> GetRestaurants(
+                        [FromQuery] RestaurantResourceParameters resourceParameters)
     {
-      var restaurants = await _knockRepository.GetRestaurantsAsync();
+      var restaurants = await _knockRepository.GetRestaurantsAsync(resourceParameters);
 
       return Ok(_mapper.Map<IEnumerable<RestaurantDto>>(restaurants));
     }

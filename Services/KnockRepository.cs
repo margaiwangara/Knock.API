@@ -74,8 +74,10 @@ namespace Knock.API.Services
       if(!string.IsNullOrWhiteSpace(restaurantParams.SearchQuery))
       {
         var searchQuery = restaurantParams.SearchQuery.Trim();
-        collection = collection.Where(r => r.Name.Contains(searchQuery) 
-                                        || r.Address.Contains(searchQuery));
+        collection = collection.Where(r => r.Name.IndexOf(searchQuery, StringComparison.CurrentCultureIgnoreCase) >= 0
+                                        || r.Address.IndexOf(searchQuery, StringComparison.CurrentCultureIgnoreCase) >= 0);
+
+        Console.WriteLine(collection.ToList()[0]);
       }
 
       // sort query
