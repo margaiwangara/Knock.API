@@ -11,6 +11,7 @@ namespace Knock.API.Models
     public string Address { get; set; }
     public string Website { get; set; }
     public bool OffersTakeout { get; set; }
+    public double AverageRating { get; set; }
     public IEnumerable<Review> Reviews { get; set; }
   }
 }

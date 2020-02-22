@@ -228,11 +228,11 @@ namespace Knock.API.Services
       }
 
       // get average
-      double ratingsAverage = ratingsSum / ratingsCount;
+      double ratingsAverage = (double) ratingsSum / ratingsCount;
 
       // modify average rating
       var restaurant = await GetRestaurantAsync(restaurantId);
-      restaurant.AverageRating = Math.Round(ratingsAverage, 1);
+      restaurant.AverageRating = Math.Round(ratingsAverage, 2);
       
       // save changes
       await SaveChangesAsync();

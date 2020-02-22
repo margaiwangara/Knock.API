@@ -6,6 +6,6 @@ namespace Knock.API.Models
   {
 
     [Required(ErrorMessage="Rating field is required")]
-    public override byte Rating { get => base.Rating; set => base.Rating = value; }
+    public override decimal Rating { get => base.Rating; set => base.Rating = value; }
   }
 }
