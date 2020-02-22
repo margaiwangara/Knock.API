@@ -211,6 +211,34 @@ namespace Knock.API.Services
       _context.Reviews.Remove(review);
     }
 
+    public async Task GetAverageRatingAsync(Guid restaurantId)
+    {
+      // get average of all ratings related to certain restaurant
+      var rating = await _context.Reviews
+                              .Where(r => r.RestaurantId == restaurantId)
+                              .Select(r => r.Rating)
+                              .ToListAsync();
+      // get ratings count
+      int ratingsCount = rating.Count;
+      int ratingsSum = 0;
+
+      foreach(byte r in rating)
+      {
+        ratingsSum += r;
+      }
+
+      // get average
+      double ratingsAverage = ratingsSum / ratingsCount;
+
+      // modify average rating
+      var restaurant = await GetRestaurantAsync(restaurantId);
+      restaurant.AverageRating = Math.Round(ratingsAverage, 1);
+      
+      // save changes
+      await SaveChangesAsync();
+                              
+    }
+
     public async Task<IEnumerable<User>> GetUsersAsync()
     {
       return await _context.Users.ToListAsync();

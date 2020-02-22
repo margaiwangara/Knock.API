@@ -76,7 +76,12 @@ namespace Knock.API.Controllers
       reviewEntity.UserId = sender;
       // if exists add review
       _knockRepository.AddReview(restaurantId, reviewEntity);
-      await _knockRepository.SaveChangesAsync();
+      if(await _knockRepository.SaveChangesAsync())
+      {
+        // update average
+        await _knockRepository.GetAverageRatingAsync(restaurantId);
+        
+      }
 
       // remap to dto
       var reviewToReturn = _mapper.Map<ReviewDto>(reviewEntity);

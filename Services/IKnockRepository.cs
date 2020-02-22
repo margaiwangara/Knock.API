@@ -26,6 +26,7 @@ namespace Knock.API.Services
     void AddReview(Guid restaurantId, Review review);
     void UpdateReview(Review review);
     void DeleteReview(Review review);
+    Task GetAverageRatingAsync(Guid restaurantId);
 
     // Users
     Task<IEnumerable<User>> GetUsersAsync();
