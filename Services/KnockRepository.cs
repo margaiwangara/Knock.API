@@ -40,6 +40,12 @@ namespace Knock.API.Services
           case "date_asc":
             collection = collection.OrderBy(c => c.DateCreated);
             break;
+          case "rating_asc":
+            collection = collection.OrderBy(c => c.AverageRating);
+            break;
+          case "rating_desc":
+            collection = collection.OrderByDescending(c => c.AverageRating);
+            break;
           default:
             collection = collection.OrderByDescending(c => c.DateCreated);
             break;
