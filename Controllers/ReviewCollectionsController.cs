@@ -79,7 +79,11 @@ namespace Knock.API.Controllers
         _knockRepository.AddReview(restaurantId, review);
       }
 
-      await _knockRepository.SaveChangesAsync();
+      if(await _knockRepository.SaveChangesAsync())
+      {
+        // update restaurant data
+         await _knockRepository.GetAverageRatingAsync(restaurantId);
+      }
 
       var reviewCollectionToReturn = _mapper.Map<IEnumerable<ReviewDto>>(reviewEntities);
       string idsAsString = string.Join(",", 
